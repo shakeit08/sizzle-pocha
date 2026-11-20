@@ -355,6 +355,36 @@ button{font-family:inherit;color:inherit;cursor:pointer;-webkit-user-select:none
 .ico{height:1.15em;width:auto;vertical-align:-.2em}
 .mcard .stars .ico{height:52px}
 .res .ic img{width:30px;height:30px;object-fit:contain;display:block}
+
+/* ==== 손님 카운터 ==== */
+.counter{flex:none;height:96px;position:relative;overflow:hidden;background:linear-gradient(#5b3a2a,#7a4f36);border-top:3px solid #3b2014}
+.counter::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.04) 0 40px,transparent 40px 80px)}
+.ledge{position:absolute;left:0;right:0;bottom:0;height:18px;background:linear-gradient(#e0a86e,#c98a54);border-top:3px solid #3b2014;box-shadow:0 -2px 0 rgba(255,255,255,.25) inset;z-index:2}
+.lvhead.ordering .sign{opacity:1!important}
+.order{position:absolute;left:8px;right:8px;top:6px;bottom:0;transform:none;display:flex;align-items:flex-end;gap:6px;background:none;border:0;box-shadow:none;padding:0;animation:custin .45s cubic-bezier(.3,1.3,.6,1);white-space:normal}
+.order.hidden{display:none!important}
+@keyframes custin{from{transform:translateX(-110%)}}
+.order.leave{transition:transform .45s ease-in,opacity .45s;transform:translateX(-110%);opacity:0}
+.order .cust{flex:none;width:74px;height:86px;position:relative;z-index:1;display:flex;align-items:flex-end;justify-content:center}
+.order .cu{font-size:62px!important;line-height:1;margin-bottom:6px;filter:drop-shadow(0 3px 0 rgba(0,0,0,.3))}
+.order .cu img{height:86px;width:auto;display:block}
+.order .ob{position:relative;z-index:3;align-self:center;margin-bottom:12px;background:#fffdf7;border:3px solid #3b2014;border-radius:14px;padding:5px 8px 5px;box-shadow:0 3px 0 #2a150b;display:flex;flex-direction:column;gap:3px;min-width:120px}
+.order .ob::before{content:"";position:absolute;left:-11px;top:50%;width:14px;height:14px;background:#fffdf7;border-left:3px solid #3b2014;border-bottom:3px solid #3b2014;transform:translateY(-50%) rotate(45deg)}
+.order .oi{display:flex;gap:6px!important}
+.order .oi b{position:relative;display:flex!important;align-items:center;justify-content:center;width:46px;height:46px;border-radius:10px;background:#f0e2cc;border:0!important;padding:0!important;font-size:11px!important}
+.order .oi b i{height:40px!important;display:block}.order .oi b i svg{height:100%;width:auto;transform:rotate(-25deg)}
+.order .oi b em{position:absolute;right:-5px;bottom:-5px;background:#3b2014;color:#fff;font-style:normal;font-weight:900;font-size:11px;border-radius:8px;padding:0 4px;line-height:15px}
+.order .oi b.sc{background:#ffb3ad!important}
+.order .oi b.sc u{position:absolute!important;left:-4px!important;top:-8px!important;transform:none!important;background:none!important;padding:0!important;font-size:15px!important}
+.order .oi b.ok{opacity:.55}.order .oi b.ok em{background:#2a9d3f}
+.order .obot{display:flex;align-items:center;gap:6px}
+.order .obar{flex:1;display:block;height:7px;background:#e3d5c2;border-radius:9px;overflow:hidden;margin:0!important}
+.order .obar i{display:block;height:100%;background:#3fae1f;transform-origin:left}
+.order.hurry .obar i{background:#ff5a5f}
+.order.hurry{animation:none!important}
+.order.hurry .ob{animation:hb .5s infinite}
+.order .otime{text-decoration:none;font-weight:900;font-size:12px;color:#5a2e1a;min-width:28px;text-align:right}
+.order .ox{position:absolute;right:-9px;top:-9px;width:22px;height:22px;border-radius:50%;background:#ff5a5f;color:#fff;border:2px solid #3b2014;font-size:11px;font-weight:900;padding:0;line-height:1}
 </style>
 </head>
 <body>
@@ -382,9 +412,9 @@ button{font-family:inherit;color:inherit;cursor:pointer;-webkit-user-select:none
       <div class="combo" id="comboBox"><b id="comboTxt">콤보 x1</b><span class="cbar"><i id="comboBar"></i></span></div>
       <div class="timer" id="timer">⏱ 2:00</div>
       <button class="pause" id="pauseBtn">❚❚</button>
-      <div class="order hidden" id="order"></div>
     </div>
     <div class="lvinfo"><span id="lvTxt">LV1</span><span id="servTxt">🍽️ 0/8</span></div>
+    <div class="counter" id="counter"><div class="order hidden" id="order"></div><div class="ledge"></div></div>
     <div class="railbox hidden" id="railbox"><div class="belt" id="belt"></div><div class="ritems" id="ritems"></div></div>
     <div class="board" id="board"></div>
     <div class="boosters">
@@ -1391,12 +1421,16 @@ function spawnOrder(){
   renderOrder(true);sfx('bell');return true;
 }
 function renderOrder(fresh){
-  const el=$('#order'),head=document.querySelector('.lvhead'),o=L&&L.order;
-  if(!o){el.classList.add('hidden');el.innerHTML='';head.classList.remove('ordering');return;}
-  if(fresh||!el.firstChild){el.classList.remove('hidden','leave');el.innerHTML=`<span class="cu">${o.who}</span><div class="ob"><div class="oi">${o.items.map((x,i)=>`<b data-i="${i}" class="${x.sauce?'sc':''}">${x.sauce?'<u>🌶️양념</u>':''}<i>${FOOD_SVG[x.t]}</i><em></em></b>`).join('')}</div><span class="obar"><i></i></span></div>`;}
-  head.classList.add('ordering');
+  const el=$('#order'),o=L&&L.order;
+  if(!o){el.classList.add('hidden');el.innerHTML='';return;}
+  if(fresh||!el.firstChild){
+    el.classList.remove('hidden','leave');
+    el.innerHTML=`<div class="cust"><span class="cu">${o.who}</span></div><div class="ob"><div class="oi">${o.items.map((x,i)=>`<b data-i="${i}" class="${x.sauce?'sc':''}">${x.sauce?'<u>🌶️</u>':''}<i>${FOOD_SVG[x.t]}</i><em></em></b>`).join('')}</div><div class="obot"><span class="obar"><i></i></span><s class="otime"></s></div><button class="ox" title="주문 거절">✕</button></div>`;
+    el.querySelector('.ox').onclick=e=>{e.stopPropagation();if(L&&L.order&&!L.order.done&&L.running)finishOrder(false);};
+  }
   o.items.forEach((x,i)=>{const b=el.querySelector(`b[data-i="${i}"]`);if(!b)return;b.classList.toggle('ok',x.got>=x.need);b.querySelector('em').textContent=x.got>=x.need?'✔':`×${x.need-x.got}`;});
   const bar=el.querySelector('.obar i');if(bar)bar.style.transform=`scaleX(${Math.max(0,o.left/o.dur)})`;
+  const tt=el.querySelector('.otime');if(tt){const t=Math.max(0,Math.ceil(o.left));tt.textContent=`${Math.floor(t/60)}:${String(t%60).padStart(2,'0')}`;}
   el.classList.toggle('hurry',o.left<5&&!o.done);
 }
 function orderMatched(t,sauced){
