@@ -210,6 +210,7 @@ button{font-family:inherit;color:inherit;cursor:pointer;-webkit-user-select:none
 .decor{position:absolute;inset:0;z-index:1;pointer-events:none}
 .cast{position:absolute;left:0;right:0;bottom:180px;z-index:3;display:flex;justify-content:center;align-items:flex-end;pointer-events:none;transition:bottom .4s}
 #scene[data-mode=clean] .cast{pointer-events:auto}
+#scene[data-mode=clean] .ch{pointer-events:none}
 .cast svg{pointer-events:none}
 .cast .dirt{pointer-events:all}
 .ch{transition:filter .3s;transform-origin:bottom center}
@@ -1182,18 +1183,20 @@ function cleanStep(next){
   sui.innerHTML=`<div class="q">꾀죄죄한 얼굴과 옷! 얼룩을 터치해서 닦아 주세요<div class="sub">남은 얼룩 <b id="dl">${total}</b>개</div></div>`;
   sui.style.pointerEvents='none';
   const handler=e=>{
-    const g=e.target.closest('.dirt');if(!g)return;
+    let g=e.target.closest&&e.target.closest('#scene .dirt:not(.gone)');
+    if(!g){let best=null,bd=40;castEl.querySelectorAll('.dirt:not(.gone)').forEach(d=>{const el=d.querySelector('ellipse')||d,b=el.getBoundingClientRect(),dd=Math.hypot(b.left+b.width/2-e.clientX,b.top+b.height/2-e.clientY);if(dd<bd){bd=dd;best=d;}});g=best;}
+    if(!g)return;
     const id=g.dataset.id,k=+g.dataset.k;if(GONE[id].has(k))return;
     GONE[id].add(k);g.classList.add('gone');sparkle(e.clientX,e.clientY,6);sfx('tap');
     const left=total-GONE.mom.size-GONE.kid.size;const dl=document.getElementById('dl');if(dl)dl.textContent=left;
     if(left<=0){
-      castEl.removeEventListener('click',handler);sui.style.pointerEvents='';
+      sceneEl.removeEventListener('pointerdown',handler,true);sui.style.pointerEvents='';
       G.clean=true;save();setMoods({mom:'happy',kid:'happy'});
       setTimeout(()=>{renderCast(null,null);toast('반짝반짝 ✨');sfx('match');const[x,y]=centerOf(castEl);sparkle(x,y,14);},300);
       setTimeout(next,1500);
     }
   };
-  castEl.addEventListener('click',handler);
+  sceneEl.addEventListener('pointerdown',handler,true);
 }
 function dressStep(next){
   setBg('shop');setMode('dress');
