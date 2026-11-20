@@ -1171,8 +1171,9 @@ function renderCast(list,speaker){
     const lk=look(sp),k=sprKey(sp.id,lk);
     const FT=/^(mom|mistress)/.test(k||'')?.07:/^grandma/.test(k||'')?.2:/^guest/.test(k||'')?.02:0;
     const ar=k?SPR_AR[k]:.4,kid=sp.id==='kid';
-    let fig=Math.min(H*.3,290)/.45*(kid?.52:sp.id==='grandma'?.86:1);
-    const BF=kid?.62:.45;
+    const gm=sp.id==='grandma';
+    let fig=Math.min(H*.3,290)/.45*(kid?.52:gm?.62:1);
+    const BF=kid?.62:gm?.56:.45;
     if(fig/(1-FT)*ar>W*.62)fig=W*.62/ar*(1-FT);
     const ih=fig/(1-FT),iw=ih*ar,bh=fig*BF;
     const inner=k?`<img src="${SPR[k]}" style="position:absolute;left:0;top:${-FT*ih}px;height:${ih}px;width:${iw}px" alt="">`:`<div style="position:absolute;left:0;top:0;height:${ih}px;width:${iw}px">${person(sp.id,lk)}</div>`;
@@ -1183,7 +1184,7 @@ function renderCast(list,speaker){
   if(curCast.length)h=Math.min(h,W*.97/(.42*(nA+.48*nK)));
   h=Math.max(h,110);
   castEl.innerHTML=curCast.map(x=>{
-    const hh=x.id==='kid'?h*.48:h;
+    const hh=x.id==='kid'?h*.48:x.id==='grandma'?h*.72:h;
     const cls=speaker?(speaker===x.id?'speak':'dim'):'';
     return `<div class="ch ${cls}" style="height:${hh}px;margin:0 ${-h*.085}px">${person(x.id,look(x))}</div>`;
   }).join('');
