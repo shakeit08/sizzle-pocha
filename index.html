@@ -385,6 +385,10 @@ button{font-family:inherit;color:inherit;cursor:pointer;-webkit-user-select:none
 .order.hurry .ob{animation:hb .5s infinite}
 .order .otime{text-decoration:none;font-weight:900;font-size:12px;color:#5a2e1a;min-width:28px;text-align:right}
 .order .ox{position:absolute;right:-9px;top:-9px;width:22px;height:22px;border-radius:50%;background:#ff5a5f;color:#fff;border:2px solid #3b2014;font-size:11px;font-weight:900;padding:0;line-height:1}
+
+/* 레일 크게 */
+.railbox{height:100px!important}
+.ritem{width:64px!important;height:84px!important;top:8px!important}
 </style>
 </head>
 <body>
@@ -1451,7 +1455,7 @@ function finishOrder(ok){
 }
 
 /* ================= 레일 스테이지 ================= */
-const RSP=46;let railRaf=0;
+const RSP=64;let railRaf=0;
 function renderRail(){
   const box=$('#railbox'),wrap=$('#ritems');
   if(!L||!L.cfg.rail){box.classList.add('hidden');wrap.innerHTML='';return;}
