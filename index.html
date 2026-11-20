@@ -496,6 +496,12 @@ html,body,button,input{font-family:"PochaJua","Pretendard","Apple SD Gothic Neo"
 /* B안: 그림 아래 끝을 판 윗선에, 카운터 높이 늘림 */
 .counter{height:102px!important}
 .order{bottom:-4px!important}
+
+/* 손님 퇴장: 말풍선 먼저 접히고 손님이 왼쪽으로 슬라이드 */
+.order.leave{transition:none!important;transform:none!important;opacity:1!important;left:8px!important}
+.order.leave .ob,.order.leave .say{transition:opacity .2s,transform .2s!important;opacity:0!important;transform:scale(.6)!important}
+.order.leave .cust{animation:custout .5s ease-in .1s forwards}
+@keyframes custout{0%{transform:translateX(0)}15%{transform:translateX(6px)}100%{transform:translateX(-170%)}}
 </style>
 </head>
 <body>
@@ -1573,7 +1579,7 @@ function finishOrder(ok){
   renderOrder();
   const me=L;
   setTimeout(()=>{if(L===me&&L.order===o)el.classList.add('leave');},650);
-  setTimeout(()=>{if(L===me&&L.order===o){L.order=null;renderOrder();L.nextOrder=L.elapsed+(L.cfg.stage==='hard'?6+Math.random()*16:10+Math.random()*8);}},1150);
+  setTimeout(()=>{if(L===me&&L.order===o){L.order=null;renderOrder();L.nextOrder=L.elapsed+(L.cfg.stage==='hard'?6+Math.random()*16:10+Math.random()*8);}},1350);
 }
 
 /* ================= 레일 스테이지 ================= */
