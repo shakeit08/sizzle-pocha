@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>눈 내리는 밤의 모녀 — 거지모녀 도와주기</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#15111b">
 <style>
 :root{--ol:#3b2a3f}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -1715,5 +1719,6 @@ renderHome();
 showTitle();
 })();
 </script>
+<script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
 </body>
 </html>
