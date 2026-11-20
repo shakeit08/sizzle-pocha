@@ -502,6 +502,11 @@ html,body,button,input{font-family:"PochaJua","Pretendard","Apple SD Gothic Neo"
 .order.leave .ob,.order.leave .say{transition:opacity .2s,transform .2s!important;opacity:0!important;transform:scale(.6)!important}
 .order.leave .cust{animation:custout .5s ease-in .1s forwards}
 @keyframes custout{0%{transform:translateX(0)}15%{transform:translateX(6px)}100%{transform:translateX(-170%)}}
+
+/* 불판·꼬치 조금 크게 (터치 영역) */
+.board{gap:6px 6px!important;padding:6px 6px!important}
+.rack{padding:calc(var(--rh)*.04) 11% calc(var(--rh)*.06)!important}
+.slot svg{height:112%!important;max-width:118%!important}
 </style>
 </head>
 <body>
@@ -1268,8 +1273,8 @@ function renderBoard(o={}){
   const rows=L.gs.length/3;
   boardEl.style.gridTemplateRows=`repeat(${rows},auto)`;
   const bw=boardEl.clientWidth||360,bh=boardEl.clientHeight||500;
-  const colW=(bw-24-20)/3;
-  boardEl.style.setProperty('--rh',Math.max(60,Math.min(colW/1.45,(bh-20-8*(rows-1))/rows-26))+'px');
+  const colW=(bw-12-12)/3;
+  boardEl.style.setProperty('--rh',Math.max(60,Math.min(colW/1.45,(bh-12-6*(rows-1))/rows-24))+'px');
   boardEl.innerHTML=L.gs.map((g,gi)=>{
     const f=g.layers[0],nx=g.layers[1];
     const slots=f.map((it,p)=>{
