@@ -267,6 +267,11 @@ button{font-family:inherit;color:inherit;cursor:pointer;-webkit-user-select:none
 .ch svg{display:block;height:100%;width:auto;overflow:visible}
 .ch.dim{filter:brightness(.72) saturate(.8)}
 .ch.vn{overflow:hidden;flex:none}
+.ch.bust{position:absolute;overflow:hidden;flex:none}
+.ch.bust.r{right:4%}.ch.bust.l{left:4%}
+.ch.bust.in{animation:bustin .25s ease-out}
+@keyframes bustin{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.dlg.wr .who{left:auto;right:16px;border-radius:8px 8px 2px 8px}
 .ch.vn.in{animation:vnin .22s ease-out}
 @keyframes vnin{from{opacity:0}to{opacity:1}}
 .cgl{position:absolute;inset:0;z-index:5;background:#000 center/cover no-repeat;opacity:0;transition:opacity .45s;pointer-events:none}
@@ -1154,14 +1159,20 @@ function renderCast(list,speaker){
   const top=mode==='clean'?110:mode==='choice'?110:mode==='dress'?40:60;
   const nA=curCast.filter(x=>x.id!=='kid').length,nK=curCast.length-nA;
   if(mode==='talk'){
-    const VB=146;castEl.style.bottom=VB+'px';stage.style.setProperty('--fl',(VB-20)+'px');
+    castEl.style.bottom='0px';stage.style.setProperty('--fl','0px');
     const sp=speaker&&CH[speaker]?(curCast.find(x=>x.id===speaker)||c(speaker,'normal')):null;
     if(!sp){castEl.innerHTML='';castEl.dataset.sig='';return;}
-    const lk=look(sp),k=sprKey(sp.id,lk),kid=sp.id==='kid',f=kid?.68:1;
-    const h=Math.max(150,Math.min((H-VB-70)*.62,430));
-    const hh=h*f,sig=sp.id,fresh=castEl.dataset.sig!==sig;castEl.dataset.sig=sig;
-    const inner=k?`<img src="${SPR[k]}" style="height:${hh}px;width:auto;display:block" alt="">`:`<div style="height:${hh}px">${person(sp.id,lk)}</div>`;
-    castEl.innerHTML=`<div class="ch vn${fresh?' in':''}" style="height:${hh}px">${inner}</div>`;
+    if(castEl.dataset.sig!==sp.id){castEl.dataset.side=castEl.dataset.sig?(castEl.dataset.side==='l'?'r':'l'):'r';}
+    const side=castEl.dataset.side||'r',fresh=castEl.dataset.sig!==sp.id;castEl.dataset.sig=sp.id;
+    const dl=sui.querySelector('.dlg');if(dl)dl.classList.toggle('wr',side==='r');
+    const lk=look(sp),k=sprKey(sp.id,lk);
+    const FT=/^(mom|mistress)/.test(k||'')?.07:/^grandma/.test(k||'')?.2:/^guest/.test(k||'')?.02:0;
+    const BF=sp.id==='kid'?.56:sp.id==='grandma'?.52:.45;
+    const ar=k?SPR_AR[k]:.4;let bh=Math.min(H*.3,290)*(sp.id==='kid'?.86:1);
+    if(bh/(BF*(1-FT))*ar>W*.62)bh=W*.62/ar*(BF*(1-FT));
+    const ih=bh/(BF*(1-FT)),iw=ih*ar;
+    const inner=k?`<img src="${SPR[k]}" style="position:absolute;left:0;top:${-FT*ih}px;height:${ih}px;width:${iw}px" alt="">`:`<div style="position:absolute;left:0;top:0;height:${ih}px;width:${iw}px">${person(sp.id,lk)}</div>`;
+    castEl.innerHTML=`<div class="ch bust ${side}${fresh?' in':''}" style="width:${iw}px;height:${bh}px;bottom:${126}px">${inner}</div>`;
     return;
   }
   let h=Math.min(H-bottom-top,mode==='clean'?520:360);
