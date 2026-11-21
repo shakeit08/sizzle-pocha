@@ -1182,7 +1182,7 @@ function renderCast(list,speaker){
     const FT=0;
     const ar=k?SPR_AR[k]:.4,kid=sp.id==='kid';
     const fb=SPR_FB[sp.id]||1;
-    let fig=Math.min(H*.3,290)/.8*fb;
+    let fig=Math.min(H*.33,320)/.8*fb;
     const BF=.8/fb;
     if(fig/(1-FT)*ar>W*.62)fig=W*.62/ar*(1-FT);
     const ih=fig/(1-FT),iw=ih*ar,bh=fig*BF;
