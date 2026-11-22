@@ -1,0 +1,17 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body>
+<script>
+window.__POCHA_TEST__=true;
+const store={};let btn=null;
+window.risuai={
+ pluginStorage:{getItem:async k=>store[k]??null,setItem:async(k,v)=>{store[k]=v;}},
+ requestPluginPermission:async()=>true,
+ getRootDocument:async()=>({querySelectorAll:async()=>[{setStyle:async()=>{},setStyleAttribute:async()=>{},getStyleAttribute:async()=>'',getBoundingClientRect:async()=>({left:0,top:0})}]}),
+ unwarpSafeArray:async a=>a,
+ showContainer:async()=>{},hideContainer:async()=>{},
+ registerButton:async(o,cb)=>{btn=cb;return{id:'b'}},registerSetting:async()=>({id:'s'}),
+ onUnload:async()=>{},addRisuScriptHandler:async(t,f)=>{window.__chat=f;},unregisterUIPart:async()=>{}
+};
+window.__store=store;window.__open=()=>btn&&btn();
+</script>
+<script src="risu_sizzle_pocha.js"></script>
+</body></html>
