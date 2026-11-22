@@ -1,0 +1,77 @@
+{
+ "ceil": {
+  "b": "ceil_bp",
+  "a": "ceil_ap",
+  "cx": 512,
+  "by": 300,
+  "w": 300
+ },
+ "window": {
+  "b": "window_b",
+  "a": "window_a",
+  "cx": 440,
+  "by": 640,
+  "w": 220
+ },
+ "sign": {
+  "b": null,
+  "a": "sign_a",
+  "cx": 660,
+  "by": 470,
+  "w": 210
+ },
+ "web": {
+  "b": "web_bp",
+  "a": "web_ap",
+  "cx": 750,
+  "by": 660,
+  "w": 200,
+  "pb": [
+   830,
+   540,
+   200
+  ]
+ },
+ "mouse": {
+  "b": "mouse_bp",
+  "a": "mouse_ap",
+  "cx": 470,
+  "by": 935,
+  "w": 250
+ },
+ "stove": {
+  "b": "stove_b",
+  "a": "stove_a",
+  "cx": 275,
+  "by": 1060,
+  "w": 175
+ },
+ "bed": {
+  "b": "bed_b",
+  "a": "bed_a",
+  "cx": 705,
+  "by": 1180,
+  "w": 330
+ },
+ "teddy": {
+  "b": null,
+  "a": "teddy_a",
+  "cx": 770,
+  "by": 1020,
+  "w": 110
+ },
+ "trash": {
+  "b": "trash_b",
+  "a": "trash_a",
+  "cx": 280,
+  "by": 1400,
+  "w": 260
+ },
+ "note": {
+  "b": null,
+  "a": "note_a",
+  "cx": 770,
+  "by": 1400,
+  "w": 170
+ }
+}
